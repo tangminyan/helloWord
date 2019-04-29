@@ -1,16 +1,18 @@
 # 1、基础搭建 #
 1）新建Maven项目，导入springboot启动依赖和web依赖
-<parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.2.RELEASE</version>
-</parent>
+    
+    <parent>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-parent</artifactId>
+	    <version>1.5.2.RELEASE</version>
+    </parent>
 
-<dependencies>
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
+    <dependencies>
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-web</artifactId>
+	    </dependency>
+    </dependencies>
 
 2）新建启动函数
 
@@ -1281,7 +1283,12 @@ PropertiesPropertySourceLoader支持的扩展是xml和properties，自定义Prop
     }
     }
 
-当前配置文件如图：
+当前配置文件如下：
+
+    ...
+    spring.datasource.password=123
+    ...
+    spring.rabbitmq.password=guest
 
     
 在DESUtil 中添加main函数获得：
@@ -1297,10 +1304,35 @@ PropertiesPropertySourceLoader支持的扩展是xml和properties，自定义Prop
 
 替换密码：
 
+    ...
+    spring.datasource.password=um461kxL7IU=
+    ...
+    spring.rabbitmq.password=/v858kv/IHI=
+    
   
 2、读取配置文件并解密
 
 PropertiesPropertySourceLoader类实现了PropertySourceLoader，源码如下：
+    
+    public class PropertiesPropertySourceLoader implements PropertySourceLoader {
+	    public PropertiesPropertySourceLoader() {
+	    }
+	
+	    public String[] getFileExtensions() {
+	        return new String[]{"properties", "xml"};
+	    }
+	
+	    public PropertySource<?> load(String name, Resource resource, String profile) throws IOException {
+	        if (profile == null) {
+	            Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+	            if (!properties.isEmpty()) {
+	                return new PropertiesPropertySource(name, properties);
+	            }
+	        }
+	
+	        return null;
+	    }
+    }
 
 
 getFileExtensions()是返回支持的文件扩展名；load方法会读取配置文件，并返回PropertySource，SpringBoot会从PropertySource读取配置项，合并到总的配置对象中。
@@ -1350,6 +1382,12 @@ getFileExtensions()是返回支持的文件扩展名；load方法会读取配置
     }
 
 3、配置PropertySourceLoader，在工程下新建/META-INF/spring.factories文件，并配置EncryptPropertyPlaceSourceLoader 。
-org.springframework.boot.env.PropertySourceLoader=baobei.cute.spring.securepwd.EncryptPropertyPlaceSourceLoader
+
+
+    org.springframework.boot.env.PropertySourceLoader=baobei.cute.spring.securepwd.EncryptPropertyPlaceSourceLoader
 
 4、运行，启动成功
+
+
+# 11、springboot redis 结合（二）—— redis加锁 #
+
