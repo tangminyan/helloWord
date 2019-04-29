@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="candy.hacker.together" />
-        <module name="HCProject" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="candy.hacker.together" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
