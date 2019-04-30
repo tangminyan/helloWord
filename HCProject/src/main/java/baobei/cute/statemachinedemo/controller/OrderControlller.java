@@ -17,7 +17,12 @@ public class OrderControlller {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String createOrder(Integer orderId) {
-        return orderStateMachineService.createOrders(orderId);
+        try {
+            orderStateMachineService.createOrders(orderId);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return "success";
     }
 
     @RequestMapping(value = "/pay", method = RequestMethod.POST)
