@@ -10,13 +10,37 @@
         $(function(){
             $("#cors").click(function(){
                 $.ajax({
-                    url:"http://localhost:8088/hello",
+                    url:"http://localhost:8888/hello",
                     success:function(data){
                         alert(data);
                     }
                 })
             });
         });
+    </script>
+    <script type="text/javascript">
+        // 初始化ECharts组件到id为main的元素上
+        let myChart = echarts.init(document.getElementById('main'));
+        // 定义图标的配置项
+        let option = {
+            title: {
+                text: 'Spring Boot中使用ECharts'
+            },
+            tooltip: {},
+            // x轴配置
+            xAxis: {
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            // y轴配置
+            yAxis: {},
+            series: [{
+                // 数据集（也可以从后端的Controller中传入）
+                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                // 图表类型，这里使用line，为折线图
+                type: 'line'
+            }]
+        };
+        myChart.setOption(option);
     </script>
 </head>
 <body>
